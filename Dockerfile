@@ -10,11 +10,11 @@ COPY sakai sakai
 WORKDIR sakai
 
 # nb. Skip tests to speed up the container build.
-RUN mvn install -Dmaven.test.skip=true -DskipTests
+RUN mvn install -Dmaven.test.skip=true
 
 # Download and install Apache Tomcat.
 RUN mkdir -p /opt/tomcat
-RUN curl "http://apache.mirror.anlx.net/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz" > /opt/tomcat/tomcat.tar.gz
+RUN curl "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz" > /opt/tomcat/tomcat.tar.gz
 RUN tar -C /opt/tomcat -xf /opt/tomcat/tomcat.tar.gz --strip-components 1
 
 # Configure Tomcat.
@@ -24,6 +24,21 @@ COPY context.xml /opt/tomcat/conf/
 
 # Install web app.
 RUN mvn sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
+
+
+# Build Sakai xAPI Plugin.
+COPY ./sakai-xapi ./sakai-xapi
+WORKDIR sakai-xapi
+RUN mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
+
+
+# Build SCORM Plugin.
+COPY ./sakai-scorm ./sakai-scorm
+WORKDIR sakai-scorm
+RUN mvn install sakai:deploy -Dmaven.test.skip=true -Dmaven.tomcat.home=/opt/tomcat
+
+
+WORKDIR sakai
 
 FROM openjdk:8
 
