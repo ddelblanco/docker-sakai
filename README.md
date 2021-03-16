@@ -9,11 +9,13 @@ This is a Docker Compose deployment, so everything should be straightforward.
 
 1. `git clone https://github.com/vbhayden/docker-sakai-xapi`
 2. `cd docker-sakai-xapi`
-3. `sudo ./install-reqs.sh`
-4. `./get-repos.sh 20x` (** see below)
+3. `sudo ./install-reqs.sh` 🍍
+4. `./get-repos.sh 20x` 🍎
 5. `sudo docker-compose up -d --build`
 
-** The versions known to be supported are `20.x` and `19.x`, but any branch found on all 3 original repositories will work.  Additionally, you could remove the Dockerfile sections responsible for adding the plugins themselves and then just target whatever Sakai version you wanted.
+🍍: This script will install Curl, Docker, and Docker Compose if those are not already found on your system.  If you have all 3 of these, feel free to skip that step.
+
+🍎: The versions known to be supported are `20.x` and `19.x`, but any branch found on all 3 original repositories will work.  Additionally, you could remove the Dockerfile sections responsible for adding the plugins themselves and then just target whatever Sakai version you wanted.
 
 The first time this command is run the Docker image for Sakai will be built,
 which can take 10 minutes or more. Additionally when the Sakai starts for the
