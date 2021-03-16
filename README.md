@@ -1,26 +1,19 @@
-# sakai-docker
+Docker Sakai w/ SCORM + xAPI
+--------------------------
+Docker setup for deploying the Sakai LMS with the community plugins for both xAPI and SCORM.
 
-Docker container for the stable version of [Sakai v12](https://github.com/sakaiproject/sakai).
+This work expands on the great work of the Hypothesis team to fix issues with the original repository and allow for targeted versions of Sakai during deployment.
 
-This project exists to help with testing of the [Hypothesis
-LMS](https://github.com/hypothesis/lms) integration in Sakai.
+### TL;DR
+This is a Docker Compose deployment, so everything should be straightforward.
 
-Installation requires [Docker Compose](https://docs.docker.com/compose/).
+1. `git clone https://github.com/vbhayden/docker-sakai-xapi`
+2. `cd docker-sakai-xapi`
+3. `sudo ./install-reqs.sh`
+4. `./get-repos.sh 20x` (** see below)
+5. `sudo docker-compose up -d --build`
 
-## Setup
-
-First, run a Git submodule update to fetch/update the source code for Sakai.
-
-```sh
-git submodules update --init
-```
-
-To build the Docker image for Sakai and launch containers for Sakai and MySQL,
-run:
-
-```sh
-docker-compose up
-```
+** The versions known to be supported are `20.x` and `19.x`, but any branch found on all 3 original repositories will work.  Additionally, you could remove the Dockerfile sections responsible for adding the plugins themselves and then just target whatever Sakai version you wanted.
 
 The first time this command is run the Docker image for Sakai will be built,
 which can take 10 minutes or more. Additionally when the Sakai starts for the
@@ -33,30 +26,10 @@ you can access Sakai by browsing to http://localhost:8080/portal.
 
 The default admin user is `admin` and the password is `admin`.
 
-## Installing the Hypothesis LTI tool
-
-To test an LTI tool, you will need to:
-
-1. Create a new "project site".
-   - Click "Worksite Setup" in the left navbar
-   - Select "Build your own site" => "project site"
-   - Click "Continue".
-2. Enter a title for the site and click "Continue".
-3. On the "Project Site Tools" page, check the "External Tool" option and click
-   Continue.
-4. Click "Continue" on the Project Site Access page
-5. Click "Create Site" on the confirmation page.
-6. Select the new site in the list of sites. It should be displayed as active
-   in the tabs at the top.
-7. Click the "External Tool" link in the left navbar and then click "Edit"
-   to configure it.
-8. Register a new LMS application instance at https://hypothes.is/welcome
-   and enter the launch URL, and consumer key and secret in Sakai.
-
 ## Troubleshooting
 
 If you have problems building or running the Docker container on macOS, you may
-need to increase the memory allowance for Docker Engine up from the default of
+eed to increase the memory allowance for Docker Engine up from the default of
 2GB to 3GB or more.
 
 This can be done in the "Advanced" section of Docker for Mac's Preferences UI.
