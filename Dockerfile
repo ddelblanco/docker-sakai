@@ -14,28 +14,18 @@ RUN mvn install -Dmaven.test.skip=true
 
 # Download and install Apache Tomcat.
 RUN mkdir -p /opt/tomcat
-RUN curl "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz" > /opt/tomcat/tomcat.tar.gz
+RUN curl "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.53/bin/apache-tomcat-9.0.53.tar.gz" > /opt/tomcat/tomcat.tar.gz
 RUN tar -C /opt/tomcat -xf /opt/tomcat/tomcat.tar.gz --strip-components 1
 
 # Configure Tomcat.
 # See https://confluence.sakaiproject.org/display/BOOT/Install+Tomcat+8
 ENV CATALINA_HOME /opt/tomcat
 COPY context.xml /opt/tomcat/conf/
+COPY setenv.sh /opt/tomcat/bin/
+COPY server.xml /opt/tomcat/conf/
 
 # Install web app.
 RUN mvn sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
-
-
-# Build Sakai xAPI Plugin.
-COPY ./sakai-xapi ./sakai-xapi
-WORKDIR sakai-xapi
-RUN mvn clean install sakai:deploy -Dmaven.tomcat.home=/opt/tomcat
-
-
-# Build SCORM Plugin.
-COPY ./sakai-scorm ./sakai-scorm
-WORKDIR sakai-scorm
-RUN mvn install sakai:deploy -Dmaven.test.skip=true -Dmaven.tomcat.home=/opt/tomcat
 
 
 WORKDIR sakai
