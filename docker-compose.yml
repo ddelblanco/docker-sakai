@@ -10,8 +10,10 @@ services:
       MYSQL_USER: sakai
       MYSQL_PASSWORD: sakaipass
       MYSQL_ROOT_PASSWORD: rootpass
-    build: 
+    build:
       context: mysql
+    ports:
+      - "3308:3306"
   sakai:
     build: .
     restart: always
